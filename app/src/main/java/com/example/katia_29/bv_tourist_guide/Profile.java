@@ -16,12 +16,15 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -38,9 +41,15 @@ public class Profile extends AppCompatActivity {
     Spinner profession;
     Button save, capture, upload;
     StorageReference storageReference;
+    DatabaseReference databaseReference;
     private int mYear, mMonth, mDay;
     private ProgressDialog progressDialog;
     private String profString;
+    String name_s,contact_s,gender_s,status_s,date_of_birth_s;
+    RadioButton gender_sel;
+    Uri downloaduri;
+    private RadioButton status_sel;
+    private DatabaseReference databasereference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,22 +67,19 @@ public class Profile extends AppCompatActivity {
         status = (RadioGroup) findViewById(R.id.status);
         name = (EditText) findViewById(R.id.name);
 
+        //DataBase reference
+        databasereference= FirebaseDatabase.getInstance().getReference();
+        databasereference.child("User Info");
+
+
+
+
+
+
         //Array Adapter for Spinner
         ArrayAdapter arrayAdapter = ArrayAdapter.createFromResource(Profile.this, R.array.Profession, android.R.layout.simple_spinner_item);
         profession.setAdapter(arrayAdapter);
-        profession.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                TextView txt = (TextView) view;
 
-                profString = txt.getText().toString().trim();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         //Firebase Storage Reference
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -97,7 +103,49 @@ public class Profile extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Getting Data from EditTexts
 
+                name_s=name.getText().toString().trim();
+                contact_s=contactNumber.getText().toString().trim();
+                date_of_birth_s=dateOfBirth.getText().toString().trim();
+
+                gender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                                                          @Override
+                                                          public void onCheckedChanged(RadioGroup group, int checkedId)
+                                                          {
+                                                              gender_sel = (RadioButton) findViewById(checkedId);
+                                                              gender_s=gender_sel.getText().toString();
+                                                          }
+                                                      }
+                );
+
+                status.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                                                      @Override
+                                                      public void onCheckedChanged(RadioGroup group, int checkedId)
+                                                      {
+                                                          status_sel = (RadioButton) findViewById(checkedId);
+                                                          status_s=status_sel.getText().toString();
+                                                      }
+                                                  }
+                );
+
+                profession.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        TextView txt = (TextView) view;
+
+                        profString = txt.getText().toString().trim();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+                UserProfile userProfile=new UserProfile(name_s,gender_s,date_of_birth_s,profString,contact_s,status_s);
+                databasereference.child("User Info").push().setValue(userProfile);
+                Toast.makeText(Profile.this,"Information Saved",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -170,7 +218,8 @@ public class Profile extends AppCompatActivity {
                     Toast.makeText(Profile.this, "Upload Success", Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
                     //Retrive image from database
-                    Uri downloaduri = taskSnapshot.getDownloadUrl();
+                     downloaduri = taskSnapshot.getDownloadUrl();
+
                     Picasso.get().load(downloaduri).into(profileImage);
 //                    Picasso.with(Post_add.this).load(downloaduri).fit().centerCrop().into(upimage);
                 }
