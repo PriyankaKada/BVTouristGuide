@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/tourism"
+    tools:context=".Register_Activity"
+
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BV Tourist Guide"
+        android:layout_gravity="center"
+        android:textSize="30dp"
+        android:textColor="#D61443"
+        android:layout_margin="10dp"
+        android:id="@+id/BV"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email"
+        android:layout_margin="20dp"
+        android:id="@+id/Email"
+
+
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:layout_margin="20dp"
+        android:id="@+id/Password"
+        android:inputType="textPassword"
+
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Confirm Password"
+        android:layout_margin="20dp"
+        android:id="@+id/confirm_password"
+        android:inputType="textPassword"
+
+
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:background="#AAACAD"
+        android:id="@+id/Register"
+        android:textSize="15dp"
+        android:layout_margin="20dp"
+
+
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Already have an acount?"
+        android:layout_margin="5dp"
+        android:id="@+id/already"
+        android:textAlignment="center"
+        android:textColor="#060505"
+        android:textSize="20dp"
+        />
+
+</LinearLayout>

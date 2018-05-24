@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">BV_Tourist_Guide</string>
+
+    <string-array name="Profession">
+        <item>Student</item>
+        <item>Gov Professional</item>
+        <item>Private Sector</item>
+
+    </string-array>
+</resources>
